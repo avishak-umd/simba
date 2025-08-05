@@ -23,7 +23,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: FedericoCarboni/setup-ffmpeg@v2
-    - uses: clonedSemicolon/setup-strace@v8
+    - name: Enable universal strace
+      uses: avishak-umd/log-strace@v12
+      with:
+        outdir: strace-logs
     - name: Set up Python 3.6
       uses: actions/setup-python@v3
       with:
@@ -43,8 +46,8 @@ jobs:
       run: |
         pytest -cov
 
-    - name: Upload strace logs
+    - name: Upload strace artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: strace_logs
-        path: strace_logs
+        name: strace-logs
+        path: ${{ env.STRACE_OUT }}
